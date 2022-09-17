@@ -1,0 +1,9 @@
+#!/bin/bash
+
+plotdef="plot \"-\" with"
+if [ -z "$1" ]
+then
+	gnuplot -p -e "$plotdef lines"
+else
+	gnuplot -p -e "$plotdef $1"
+fi

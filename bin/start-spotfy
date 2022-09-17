@@ -1,0 +1,8 @@
+#!/bin/sh
+ws_music=$1
+
+if pgrep -x "spotify" > /dev/null; then
+	i3-msg "workspace $ws_music"
+else
+	i3-msg "workspace $ws_music; exec --no-startup-id /usr/bin/spotify"
+fi

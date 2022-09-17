@@ -1,0 +1,4 @@
+#!/bin/bash
+
+TMPCSV=$(echo "/tmp/joincsv-tmp-$(echo $RANDOM | md5sum)")
+echo ".exit" | sqlite3 -cmd ".headers on" -cmd ".mode csv" -cmd ".import $1 left" -cmd ".import $2 right" -cmd "select * from left left join right on left.$3 = right.$4;"

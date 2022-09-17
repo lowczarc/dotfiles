@@ -1,0 +1,142 @@
+#############################
+#        ENVIRONMENT        #
+#############################
+
+# Define vim as main editor
+export EDITOR=nvim
+
+# Setup Cargo environment
+source $HOME/.cargo/env
+
+# Setup Npm environment
+export PATH=$PATH:~/.node_modules/bin
+unset npm_config_prefix
+
+# Setup Go environment
+export GOPATH=~/Documents/Dev/go
+export PATH=$PATH:$GOPATH/bin
+
+# Setup R environment
+export R_LIBS_USER=~/.Rlibs
+
+# Setup Dart/Android environment
+export PUB_CACHE=~/.pub-cache
+export ANDROID_HOME=~/Documents/Dev/Android/Sdk/
+
+# Add user defined scripts/programs to PATH
+export PATH=~/.local/bin:$PATH
+
+export CHROME_EXECUTABLE=chromium
+
+
+#############################
+#       START SCRIPTS       #
+#############################
+
+# If not interactive, stop here
+[[ $- != *i* ]] && return
+
+# Launch X server on connection on tty1
+[[ $(tty) == "/dev/tty1" ]] && sway
+
+# Set a custom font on tty
+[[ $(tty) == /dev/tty* ]] && setfont /usr/share/kbd/consolefonts/Tamsyn8x16r.psf.gz
+
+
+#############################
+#          ALIASES          #
+#############################
+
+# Transparent software change
+alias vi='vim'
+alias vim='nvim'
+alias vit='vit && clear'
+alias sudo='doas'
+alias ls='ls --color=auto'
+alias powersave-cpu='sudo cpupower frequency-set -u 1.4Ghz'
+alias normal-cpu='sudo cpupower frequency-set -u 2.3Ghz'
+alias boost-cpu='sudo cpupower frequency-set -u 3.4Ghz'
+alias schedutil-cpu='sudo cpupower frequency-set --governor schedutil'
+
+# Shortcuts
+alias view='devour viewnior'
+alias powernow="awk '{print \$1*10^-6 \" W\"}' /sys/class/power_supply/BAT0/power_now"
+alias :q='exit'
+alias :e='vim'
+alias _='devour'
+bind -x '"\C-l": clear;'
+
+# Utils
+alias gr='grep -Irn'
+alias sourceenv='set -a && source .env && set +a'
+alias rcd='cd $(realpath $PWD)'
+alias chsize='ls -a | tail +3 | xargs du -sh'
+alias uncolorize='sed $(echo -e "s/\033\[[0-9;]*m//g")'
+
+# Format
+alias jatoplotable="tr -d \"
+\" | tr ',' \"
+\"| tr -d ' []' | awk '{ print NR\" \"\$0 }'"
+alias tv="tidy-viewer"
+
+# Fix Aliases
+alias ssh='TERM=xterm ssh'
+alias vlc='devour vlc'
+alias sort="LC_ALL=C sort"
+alias join="LC_ALL=C join"
+
+
+#############################
+#          OPTIONS          #
+#############################
+
+# Set bash in vi mode
+set -o vi
+
+# Disable ! style history substitusion
+set +H
+
+
+#############################
+#          PROMPT           #
+#############################
+
+# Add a new line after last line if the last command is not clear
+function print_prompt_new_line {
+	previous_command=$1
+
+	if [[ $previous_command != "clear" && $previous_command != "" ]]; then
+		echo -e "\n\r"
+	fi
+}
+
+# HOME_ICON="🏡"
+# REMOTE_SERVER_ICON="🌐"
+# PHONE_ICON="📱"
+# ROOT_ICON="🔑"
+# SSH_ICON="🔒"
+# VIM_ICON="📝"
+# VLC_ICON="📺"
+# GIT_BRANCH_ICON="🔗"
+function print_icon_end_of_line {
+	if [[ $(ls -a | grep -c "^.git$") -gt 0 ]]; then
+ 		GIT_EOL="📦: 🔗 \033[1;32m$(git branch | grep '*' | cut -d ' ' -f 2) \033[0m"
+		# $(git branch 2> /dev/null | grep -e '^*' | sed -e 's/^*\s*//')"
+	fi
+	# echo -en $GIT_EOL && sleep 1 && read -sdR CURPOS
+	echo $CURPOS
+
+	tput hpa $(echo "$(tput cols) - $(echo $GIT_EOL | tr -dc '[[:print:]]' | wc -c)" | bc)
+	echo -e $GIT_EOL
+
+}
+
+# Define the home prompt
+PS1='$(print_prompt_new_line $PREVIOUS_COMMAND)[\u@\[\033[01m\033[34m\]\h\[\033[0m\] \w] 🏡\n\$ '
+
+
+# Save in memory the previous command to be able to use it in print_prompt_new_line
+trap 'PREVIOUS_COMMAND=$BASH_COMMAND;' DEBUG
+
+source "/home/lancelot/.rover/env"
+source /usr/share/nvm/init-nvm.sh

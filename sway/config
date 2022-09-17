@@ -1,0 +1,207 @@
+set $mod Mod4
+
+font pango:Fixed 8
+
+# Start NetworkManager applet
+exec --no-startup-id nm-applet --indicator
+
+# Start bluetooth applet
+exec --no-startup-id blueman-applet
+
+# Build font cache
+exec --no-startup-id fc-cache
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86MonBrightnessDown exec --no-startup-id doas /usr/bin/backlight_control less
+bindsym XF86MonBrightnessUp exec --no-startup-id doas /usr/bin/backlight_control more
+
+bindsym Print exec --no-startup-id scrot '%Y-%m-%d_$wx$h_scrot.png' -e 'mv $f ~/Pictures/'
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec --no-startup-id alacritty
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# start rofi (a program launcher)
+bindsym $mod+d exec --no-startup-id rofi -theme dmenu -show run
+
+# Scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+b split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# Picture In Picture mode
+bindsym $mod+y fullscreen disable, sticky enable, floating enable, resize set 480 270, move window to position 1420 790
+bindsym $mod+Shift+y sticky disable, floating disable
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# lock manually
+bindsym $mod+shift+x exec --no-startup-id systemctl suspend
+bindsym $mod+shift+s exec --no-startup-id sh ~/.config/sway/lock.sh
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+# Each workspace has a number and a name. The number is used by waybar to sort the
+# workspaces.
+set $ws11 "98: "
+set $ws_music "99: "
+set $ws1 "101: 1  "
+set $ws2 "102: 2  "
+set $ws3 "103: 3  "
+set $ws4 "104: 4  "
+set $ws5 "105: 5  "
+set $ws6 "106: 6  "
+set $ws7 "107: 7  "
+set $ws8 "108: 8  "
+set $ws9 "109: 9  "
+set $ws10 "110: 10  "
+
+workspace $ws1 output eDP-1
+workspace $ws2 output eDP-1
+workspace $ws3 output eDP-1
+workspace $ws4 output eDP-1
+workspace $ws5 output eDP-1
+workspace $ws6 output eDP-1
+workspace $ws7 output eDP-1
+workspace $ws8 output eDP-1
+workspace $ws9 output eDP-1
+workspace $ws10 output eDP-1
+workspace $ws11 output DP-1
+workspace $ws_music output eDP-1
+
+# switch to workspace
+bindsym $mod+m exec --no-startup-id start-spotfy $ws_music
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+bindcode $mod+49 workspace $ws11
+
+# move focused container to workspace
+bindsym $mod+Shift+m move container to workspace $ws_music
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+bindcode $mod+Shift+49 move container to workspace $ws11
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will shutdown you GUI' -B 'Yes, exit sway' 'sway exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+hide_edge_borders both
+default_border pixel 1
+
+# Support for Picture in Picture mode
+for_window [title="Picture-in-Picture"] border pixel 1, fullscreen disable, sticky enable, floating enable, resize set 480 270, move window to position 1420 790
+
+# We use waybar as a status bar. The configuration is located in ~/.config/waybar/config
+exec_always waybar
+
+# Start the default layout created with arandr
+exec_always --no-startup-id sh ~/.screenlayout/default.sh
+
+# Set the wallpaper
+exec_always --no-startup-id swaybg --image ~/Pictures/wallpaper/current.png --output eDP-1
+
+# We use a custom script to hibernate the system when the battery is lower than 2%
+exec --no-startup-id sh ~/.config/sway/battery_check
+
+# Redshift allows to change the color temperature of the screen according to the time of the day
+exec --no-startup-id redshift
+
+# Dunst is a notification daemon
+exec --no-startup-id dunst
+
+# This script remap the left alt key to the right alt key
+# We will later use the right alt key as the compose key
+# This is a workaround because xkb_options compose:lalt doesn't work in sway
+exec --no-startup-id xremap ~/.config/sway/xremap.yml
+
+input type:keyboard {
+        # We remap the right alt key to the compose key and the caps lock key to the escape key
+        xkb_options caps:escape,compose:ralt
+}

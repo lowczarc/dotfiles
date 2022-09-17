@@ -1,0 +1,86 @@
+call plug#begin('~/.vim/plugged')
+
+Plug 'rust-lang/rust.vim'
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+
+Plug 'sheerun/vim-polyglot'
+
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'HerringtonDarkholme/yats.vim'
+
+Plug 'fatih/molokai'
+
+Plug 'jsit/toast.vim'
+
+Plug 'mgechev/revive'
+
+Plug 'dense-analysis/ale'
+
+Plug 'github/copilot.vim'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+Plug 'LhKipp/nvim-nu', {'do': ':TSInstall nu'}
+
+call plug#end()
+
+colorscheme molokai
+colorscheme toast
+"set background=light
+set termguicolors
+
+syntax on
+set nu
+set relativenumber
+
+let g:ale_enabled = 0
+
+" Alias commands
+command W w
+command Q q
+command WQ wq
+command Wq wq
+command E e
+
+" Rust.vim config
+let g:rustfmt_fail_silently = 0
+let g:rustfmt_autosave = 1
+
+set signcolumn=yes
+
+" Use language dependent configurations
+let b:did_ftplugin = 1
+
+set colorcolumn=80
+
+augroup vimrc_todo
+    au!
+    au Syntax * syn match WarningMessage /\v<(WARNING|DEBUG)/
+          \ containedin=.*Comment,vimCommentTitle
+augroup END
+hi def link WarningMessage Todo
+
+" Remove arrow mapping
+map <Left> <nop>
+map <Right> <nop>
+map <Up> <nop>
+map <Down> <nop>
+
+" vim -b : edit binary using xxd-format!
+augroup Binary
+  au!
+  au BufReadPre  *.bin let &bin=1
+  au BufReadPost *.bin if &bin | %!xxd
+  au BufReadPost *.bin set ft=xxd | endif
+  au BufWritePre *.bin if &bin | %!xxd -r
+  au BufWritePre *.bin endif
+  au BufWritePost *.bin if &bin | %!xxd
+  au BufWritePost *.bin set nomod | endif
+augroup END
+
+au BufReadPost *.nu set syntax=nu

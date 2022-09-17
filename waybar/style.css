@@ -1,0 +1,118 @@
+@define-color background #222;
+@define-color background-alt #444;
+@define-color foreground #dfdfdf;
+@define-color foreground-alt #555;
+@define-color primary #ffb52a;
+@define-color secondary #e60053;
+@define-color alert #bd2c40;
+
+@define-color green #4ed862;
+@define-color red #f50a4d;
+@define-color blue #0a6cf5;
+@define-color light-blue #00b5e2;
+@define-color pink #ff00c5;
+@define-color dark-green #00bfa5;
+@define-color yellow #ffb52a;
+@define-color purple #9f78e1;
+
+* {
+    font-family: Siji, Fixed;
+    font-size: 10px;
+    font-weight: normal;
+    min-height: 21px;
+}
+
+window#waybar {
+    background: @background;
+    border-bottom: 3px solid @background;
+    color: @foreground;
+    transition-property: background-color;
+    transition-duration: .5s;
+    padding: 0;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces button {
+    transition-property: background-color;
+    transition-duration: .0s;
+    padding: 0px 6px;
+    background-color: @background;
+    box-shadow: inherit;
+    color: @foreground;
+    border: none;
+    border-radius: 0;
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 5px;
+}
+
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+#workspaces button:hover {
+    background: transparent;
+    color: inherit;
+    text-shadow: inherit;
+    box-shadow: inherit;
+}
+
+#workspaces button.focused {
+    background-color: @background-alt;
+    border-bottom: 3px solid @primary;
+    box-shadow: inherit;
+    text-shadow: inherit;
+    padding-top: 3px;
+}
+
+#workspaces button.urgent {
+    background-color: @alert;
+}
+
+#mode {
+    background-color: @primary;
+    color: #000;
+    padding: 0px 6px;
+}
+
+#network, #battery, #temperature, #clock, #custom-dunst, #disk, #pulseaudio, #tray {
+    padding: 0 1px;
+    margin: 0 8px;
+}
+
+#disk {
+    padding: 0 1px;
+    margin: 0 5px;
+}
+
+#network {
+    border-bottom: 3px solid @purple;
+}
+
+#battery {
+    border-bottom: 3px solid @yellow;
+}
+
+#temperature {
+    border-bottom: 3px solid @red;
+}
+
+#clock {
+    border-bottom: 3px solid @blue;
+}
+
+#pulseaudio {
+    border-bottom: 3px solid @foreground;
+}
+
+#pulseaudio.muted, #pulseaudio.low {
+    border-bottom: 3px solid @foreground-alt;
+}
+
+#pulseaudio.high {
+    border-bottom: 3px solid @yellow;
+}
+
+#pulseaudio.max {
+    border-bottom: 3px solid @red;
+}

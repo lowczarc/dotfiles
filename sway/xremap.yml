@@ -1,0 +1,4 @@
+modmap:
+  - name: Name
+    remap:
+      KEY_LEFTALT: KEY_RIGHTALT

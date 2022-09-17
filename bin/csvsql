@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sqlite3 -csv -cmd ".headers on" -cmd ".mode csv" -cmd ".import $1 default"

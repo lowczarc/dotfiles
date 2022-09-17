@@ -1,0 +1,3 @@
+#!/bin/bash
+
+while true; do echo -e "HTTP/1.0 200 OK\nContent-Type: text/plain\n\n:)\n" | nc -Nl 3001; done

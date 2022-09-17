@@ -1,0 +1,25 @@
+#!/bin/bash
+LOW_BATTERY_LEVEL=20
+CRITICAL_BATTERY_LEVEL=5
+SHUTDOWN_BATTERY_LEVEL=2
+
+LAST_CHARGE=100
+while true;
+do
+	CURRENT_CHARGE=$(cat /sys/class/power_supply/BAT0/capacity)
+	STATUS=$(cat /sys/class/power_supply/BAT0/status)
+
+	if [ "$CURRENT_CHARGE" -le "$SHUTDOWN_BATTERY_LEVEL" -a "$LAST_CHARGE" -gt "$SHUTDOWN_BATTERY_LEVEL" -a "$STATUS" = "Discharging" ];
+	then
+		systemctl hibernate
+	elif [ "$CURRENT_CHARGE" -le "$CRITICAL_BATTERY_LEVEL" -a "$LAST_CHARGE" -gt "$CRITICAL_BATTERY_LEVEL" -a "$STATUS" = "Discharging" ];
+	then
+		notify-send -u critical "Battery Low" "The battery is getting critically low: less than $CRITICAL_BATTERY_LEVEL% remaining.\nYou should plug your PC"
+	elif [ "$CURRENT_CHARGE" -le "$LOW_BATTERY_LEVEL" -a "$LAST_CHARGE" -gt "$LOW_BATTERY_LEVEL" -a "$STATUS" = "Discharging" ];
+	then
+		notify-send "Battery Low" "The battery is getting low: less than $LOW_BATTERY_LEVEL% remaining"
+	fi
+
+	LAST_CHARGE=$CURRENT_CHARGE
+	sleep 10;
+done;

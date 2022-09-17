@@ -1,0 +1,13 @@
+include "%L"
+
+<Multi_key> <e> <e> : "é"
+<Multi_key> <e> <u> : "€"
+<Multi_key> <asciitilde> <n> : "ñ"
+<Multi_key> <6> <e> : "ê"
+<Multi_key> <l> <l> : "λ"
+<Multi_key> <2> <2> : "²"
+<Multi_key> <comma> <3> : "❤"
+<Multi_key> <semicolon> <0> : "😀"
+<Multi_key> <t> <Up> : "👍"
+<Multi_key> <a> <n> : "🐜"
+<Multi_key> <f> <x> : "🔧"

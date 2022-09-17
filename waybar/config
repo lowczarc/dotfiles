@@ -1,0 +1,107 @@
+{
+    "height": "27px",
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["disk#root", "disk#home", "custom/dunst", "pulseaudio", "network", "battery", "temperature", "clock", "tray"],
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "<span color=\"#555\">{icon} </span> {capacity}%",
+        "format-charging": "<span color=\"#555\"> </span> {capacity}%",
+        "format-plugged": "<span color=\"#555\"> </span> {capacity}%",
+        "format-icons": ["", "", "", "", ""],
+        "tooltip": false
+    },
+    "network": {
+        "format-wifi": "<span color=\"#555\"> </span> {essid}",
+        "format-ethernet": "{ipaddr}/{cidr}",
+        "tooltip-format": "{ifname} via {gwaddr}",
+        "format-linked": "{ifname} (No IP)",
+        "format-disconnected": "<span color=\"#555\">⚠ </span> Disconnected",
+        "on-click": "nm-connection-editor",
+        "tooltip": false,
+    },
+    "temperature": {
+        "critical-threshold": 60,
+        "format": "<span color=\"#555\">{icon} </span> {temperatureC}°C",
+        "format-icons": ["", "", ""],
+        "tooltip": false
+    },
+    "clock": {
+        "format": "<span color=\"#555\"> </span> {:%H:%M}",
+        "format-alt": "<span color=\"#555\"> </span> {:%Y-%m-%d %H:%M:%S}",
+        "tooltip": false
+    },
+    "custom/dunst": {
+        "exec": "~/.config/waybar/scripts/dunst.sh",
+        "on-click": "dunstctl set-paused toggle",
+        "restart-interval": 1,
+        "tooltip": false
+    },
+    "disk#root": {
+        "interval": 30,
+        "format": "<span color=\"#0a81f5\">{path}</span>: {percentage_used}%",
+        "path": "/",
+        "tooltip": false
+    },
+    "disk#home": {
+        "interval": 30,
+        "format": "<span color=\"#0a81f5\">{path}</span>: {percentage_used}%",
+        "path": "/home",
+        "tooltip": false
+    },
+    "pulseaudio": {
+        "states": {
+            "low": 0,
+            "normal": 30,
+            "high": 80,
+            "max": 95,
+        },
+        "format": "{icon}  {volume}%",
+        "format-muted": "<span color=\"#555\">  muted</span>",
+        "format-icons": [
+            "<span color=\"#555\"></span>",
+            "<span color=\"#555\"></span>",
+            "<span color=\"#555\"></span>",
+            "<span color=\"#555\"></span>",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "<span color=\"#f5a70a\"></span>",
+            "<span color=\"#f5a70a\"></span>",
+            "<span color=\"#f50a4d\"></span>",
+        ],
+        "max-volume": 100,
+        "on-click": "pavucontrol",
+        "tooltip": false
+    },
+    "sway/window": {
+        "tooltip": false
+    },
+    "sway/workspaces": {
+        "format": "{name}",
+        "numeric-first": false,
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": "",
+            "7": "",
+            "8": "",
+            "9": "",
+            "10": "",
+            "default": "-",
+        }
+    },
+    "tray": {
+        "spacing": 5,
+    }
+}
