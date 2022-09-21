@@ -32,6 +32,7 @@
     "clock": {
         "format": "<span color=\"#555\"> </span> {:%H:%M}",
         "format-alt": "<span color=\"#555\"> </span> {:%Y-%m-%d %H:%M:%S}",
+        "interval": 1,
         "tooltip": false
     },
     "custom/dunst": {
@@ -87,19 +88,6 @@
     "sway/workspaces": {
         "format": "{name}",
         "numeric-first": false,
-        "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": "",
-            "6": "",
-            "7": "",
-            "8": "",
-            "9": "",
-            "10": "",
-            "default": "-",
-        }
     },
     "tray": {
         "spacing": 5,
