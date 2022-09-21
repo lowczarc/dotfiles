@@ -1,0 +1,12 @@
+#!/bin/bash
+
+WAYLAND_FOCUSED_RECT="$(swaymsg -t get_outputs | jq -r '.[] | select(.focused).name')"
+
+case "$WAYLAND_FOCUSED_RECT" in
+		"eDP-1")
+			echo "0"
+				;;
+		"DP-1")
+			echo "1"
+				;;
+esac

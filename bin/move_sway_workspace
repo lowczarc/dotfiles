@@ -1,0 +1,5 @@
+#!/bin/bash
+
+MONITOR="$(get_current_wayland_screen_id)"
+
+sway workspace "$MONITOR$@"
