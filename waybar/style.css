@@ -42,11 +42,11 @@ window#waybar.hidden {
     background-color: @background;
     box-shadow: inherit;
     color: @foreground;
-    border: none;
+    border-bottom: 3px solid @background;
     border-radius: 0;
-    padding-top: 0px;
     padding-left: 0px;
     padding-right: 5px;
+    padding-top: 3px;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
@@ -62,7 +62,6 @@ window#waybar.hidden {
     border-bottom: 3px solid @primary;
     box-shadow: inherit;
     text-shadow: inherit;
-    padding-top: 3px;
 }
 
 #workspaces button.urgent {
