@@ -9,4 +9,7 @@ case "$WAYLAND_FOCUSED_RECT" in
 		"DP-1")
 			echo "1"
 				;;
+		"HDMI-A-1")
+			echo "2"
+				;;
 esac

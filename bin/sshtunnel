@@ -1,3 +1,11 @@
 #!/bin/bash
 
-ssh -N -R 3000:localhost:3001 lancelot.life
+PORT=$1
+
+if [ -z "$PORT" ]; then
+	echo "Port not specified, defaulting to 3001"
+	PORT=3001
+fi
+
+echo "Tunnel local port $PORT to remote port 3000"
+ssh -N -R 3000:localhost:$PORT lancelot.life

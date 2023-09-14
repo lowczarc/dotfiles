@@ -2,11 +2,19 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'rust-lang/rust.vim'
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/plenary.nvim'
 
-Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'MunifTanjim/prettier.nvim'
+Plug 'ray-x/go.nvim'
+
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+
+" Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
 Plug 'sheerun/vim-polyglot'
 
@@ -28,6 +36,43 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'LhKipp/nvim-nu', {'do': ':TSInstall nu'}
 
 call plug#end()
+
+lua << EOF
+local null_ls = require("null-ls")
+
+local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+local event = "BufWritePre" -- or "BufWritePost"
+local async = event == "BufWritePost"
+
+null_ls.setup({
+  on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      vim.keymap.set("n", "<Leader>f", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+
+      -- format on save
+      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+      vim.api.nvim_create_autocmd(event, {
+        buffer = bufnr,
+        group = group,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = bufnr, async = async })
+        end,
+        desc = "[lsp] format on save",
+      })
+    end
+
+    if client.supports_method("textDocument/rangeFormatting") then
+      vim.keymap.set("x", "<Leader>f", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+    end
+  end,
+})
+
+local prettier = require("prettier")
+EOF
 
 colorscheme molokai
 colorscheme toast
@@ -71,6 +116,9 @@ map <Right> <nop>
 map <Up> <nop>
 map <Down> <nop>
 
+" Move between windows with Tab instead of Ctrl-w
+map <Tab> <C-w>
+
 " vim -b : edit binary using xxd-format!
 augroup Binary
   au!
@@ -81,6 +129,14 @@ augroup Binary
   au BufWritePre *.bin endif
   au BufWritePost *.bin if &bin | %!xxd
   au BufWritePost *.bin set nomod | endif
-augroup END
 
+  au BufReadPre  *.rom let &bin=1
+  au BufReadPost *.rom if &bin | %!xxd
+  au BufReadPost *.rom set ft=xxd | endif
+  au BufWritePre *.rom if &bin | %!xxd -r
+  au BufWritePre *.rom endif
+  au BufWritePost *.rom if &bin | %!xxd
+  au BufWritePost *.rom set nomod | endif
+
+augroup END
 au BufReadPost *.nu set syntax=nu

@@ -8,3 +8,5 @@ function! s:show_documentation()
 endfunction
 set expandtab
 set shiftwidth=4
+
+autocmd BufWritePre * Prettier

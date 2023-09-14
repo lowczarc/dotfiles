@@ -11,6 +11,7 @@ source $HOME/.cargo/env
 # Setup Npm environment
 export PATH=$PATH:~/.node_modules/bin
 unset npm_config_prefix
+export PATH=~/.yarn/bin:$PATH
 
 # Setup Go environment
 export GOPATH=~/Documents/Dev/go
@@ -50,6 +51,7 @@ export CHROME_EXECUTABLE=chromium
 # Transparent software change
 alias vi='vim'
 alias vim='nvim'
+alias bim='nvim'
 alias vit='vit && clear'
 alias sudo='doas'
 alias ls='ls --color=auto'
@@ -65,6 +67,10 @@ alias :q='exit'
 alias :e='vim'
 alias _='devour'
 bind -x '"\C-l": clear;'
+alias srce='sourceenv'
+
+# Pianity specific shortcuts
+alias cdp='cd ~/polyfact-autodoc'
 
 # Utils
 alias gr='grep -Irn'

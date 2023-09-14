@@ -75,8 +75,16 @@ window#waybar.hidden {
 }
 
 #network, #battery, #temperature, #clock, #custom-dunst, #disk, #pulseaudio, #tray {
+    color: @foreground;
     padding: 0 1px;
     margin: 0 8px;
+}
+
+#network:hover, #battery:hover, #temperature:hover, #clock:hover, #custom-dunst:hover, #disk:hover, #pulseaudio:hover, #tray:hover {
+    background: transparent;
+    color: inherit;
+    text-shadow: inherit;
+    box-shadow: inherit;
 }
 
 #disk {
