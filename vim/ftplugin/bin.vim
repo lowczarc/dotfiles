@@ -17,3 +17,4 @@ augroup Binary
   au BufWritePost *.rom set nomod | endif
 
 augroup END
+set noendofline
