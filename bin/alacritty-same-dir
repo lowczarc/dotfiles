@@ -3,10 +3,10 @@
 WINDOW_PID="$(swaymsg -t get_tree | jq -r '.. | select(.focused? == true) | .pid')"
 SHELL_PID="$(pgrep -P "$WINDOW_PID")"
 
-PID_PATH="$(readlink -f /proc/$SHELL_PID/cwd)"
+PATH_WITH_LINK=$(sudo /usr/sbin/get-bash-pwd.py $SHELL_PID)
 
-if [ -d "$PID_PATH" ]; then
-    alacritty --working-directory "$PID_PATH"
+if [ -n "$PATH_WITH_LINK" ]; then
+    cd $PATH_WITH_LINK && alacritty || alacritty
 else
     alacritty
 fi

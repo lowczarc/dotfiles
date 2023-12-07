@@ -55,6 +55,8 @@ alias bim='nvim'
 alias vit='vit && clear'
 alias sudo='doas'
 alias ls='ls --color=auto'
+alias wlc="wl-copy"
+alias wlp="wl-paste"
 alias powersave-cpu='sudo cpupower frequency-set -u 1.4Ghz'
 alias normal-cpu='sudo cpupower frequency-set -u 2.3Ghz'
 alias boost-cpu='sudo cpupower frequency-set -u 3.4Ghz'
@@ -68,9 +70,6 @@ alias :e='vim'
 alias _='devour'
 bind -x '"\C-l": clear;'
 alias srce='sourceenv'
-
-# Pianity specific shortcuts
-alias cdp='cd ~/polyfact-autodoc'
 
 # Utils
 alias gr='grep -Irn'
@@ -123,26 +122,28 @@ function print_prompt_new_line {
 # SSH_ICON="🔒"
 # VIM_ICON="📝"
 # VLC_ICON="📺"
-# GIT_BRANCH_ICON="🔗"
+GIT_BRANCH_ICON="🔗"
 function print_icon_end_of_line {
-	if [[ $(ls -a | grep -c "^.git$") -gt 0 ]]; then
- 		GIT_EOL="📦: 🔗 \033[1;32m$(git branch | grep '*' | cut -d ' ' -f 2) \033[0m"
-		# $(git branch 2> /dev/null | grep -e '^*' | sed -e 's/^*\s*//')"
+	GIT_BRANCH=$(git branch 2> /dev/null | grep '*' | cut -d ' ' -f 2)
+	if [ -n "$GIT_BRANCH" ]; then
+ 		GIT_EOL="$GIT_BRANCH_ICON \033[1;30m$GIT_BRANCH\033[0m"
+
+		# Compute the column number to write to the end of the PS1 line
+		col=$(echo "$(tput cols) - $(echo "$GIT_EOL" | sed 's/\033\[[0-9;]*m//g' | wc -m) + 1" | bc)
+
+		tput hpa $col
+
+		echo -e $GIT_EOL
+
 	fi
-	# echo -en $GIT_EOL && sleep 1 && read -sdR CURPOS
-	echo $CURPOS
-
-	tput hpa $(echo "$(tput cols) - $(echo $GIT_EOL | tr -dc '[[:print:]]' | wc -c)" | bc)
-	echo -e $GIT_EOL
-
 }
 
 # Define the home prompt
-PS1='$(print_prompt_new_line $PREVIOUS_COMMAND)[\u@\[\033[01m\033[34m\]\h\[\033[0m\] \w] 🏡\n\$ '
+PS1='$(print_prompt_new_line $PREVIOUS_COMMAND)$(print_icon_end_of_line)\r[\u@\[\033[01m\033[34m\]\h\[\033[0m\] \w] 🏡\n\$ '
+
+# We need to add a very short sleep to be sure `tput cols` gives us the right value
+sleep 0.01
 
 
 # Save in memory the previous command to be able to use it in print_prompt_new_line
 trap 'PREVIOUS_COMMAND=$BASH_COMMAND;' DEBUG
-
-source "/home/lancelot/.rover/env"
-source /usr/share/nvm/init-nvm.sh
