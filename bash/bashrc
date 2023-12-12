@@ -17,18 +17,10 @@ export PATH=~/.yarn/bin:$PATH
 export GOPATH=~/Documents/Dev/go
 export PATH=$PATH:$GOPATH/bin
 
-# Setup R environment
-export R_LIBS_USER=~/.Rlibs
-
-# Setup Dart/Android environment
-export PUB_CACHE=~/.pub-cache
-export ANDROID_HOME=~/Documents/Dev/Android/Sdk/
-
 # Add user defined scripts/programs to PATH
 export PATH=~/.local/bin:$PATH
 
 export CHROME_EXECUTABLE=chromium
-
 
 #############################
 #       START SCRIPTS       #
@@ -42,6 +34,20 @@ export CHROME_EXECUTABLE=chromium
 
 # Set a custom font on tty
 [[ $(tty) == /dev/tty* ]] && setfont /usr/share/kbd/consolefonts/Tamsyn8x16r.psf.gz
+
+# This is lazy loading nvm to avoid 1 sec of loading everytime we open a terminal
+nvm_lazy_load() {
+	if [ -z "${NVM_LOADED}" ]; then
+		unalias nvm node npm npx yarn
+		source ~/.nvm/nvm.sh
+		export NVM_LOADED=1
+	fi
+}
+alias nvm='nvm_lazy_load > /dev/null && nvm'
+alias node='nvm_lazy_load > /dev/null && node'
+alias npm='nvm_lazy_load > /dev/null && npm'
+alias npx='nvm_lazy_load > /dev/null && npx'
+alias yarn='nvm_lazy_load > /dev/null && yarn'
 
 
 #############################
