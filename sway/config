@@ -8,6 +8,9 @@ exec --no-startup-id nm-applet --indicator
 # Start bluetooth applet
 exec --no-startup-id blueman-applet
 
+# Add JP input method
+exec --no-startup-id fcitx5
+
 # Build font cache
 exec --no-startup-id fc-cache
 
@@ -195,7 +198,8 @@ exec_always --no-startup-id swaybg --image ~/Pictures/wallpaper/current.png --ou
 exec --no-startup-id sh ~/.config/sway/battery_check
 
 # Redshift allows to change the color temperature of the screen according to the time of the day
-exec --no-startup-id redshift
+# -l and -L are the coordinates of Kyoto
+exec --no-startup-id wlsunset -l 35.0 -L 135.8
 
 # Dunst is a notification daemon
 exec --no-startup-id dunst
@@ -213,5 +217,6 @@ input type:keyboard {
         xkb_options caps:escape,compose:ralt
 }
 
-output eDP-1 pos 0 1800
+output eDP-1 pos 0 1080
 output DP-1 pos 1920 0
+output HDMI-A-1 pos 900 0

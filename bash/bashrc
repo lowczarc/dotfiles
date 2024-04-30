@@ -22,6 +22,9 @@ export PATH=~/.local/bin:$PATH
 
 export CHROME_EXECUTABLE=chromium
 
+export QT_IM_MODULE='ibus'
+export XMODIFIERS='@im=ibus'
+
 #############################
 #       START SCRIPTS       #
 #############################
@@ -153,3 +156,8 @@ sleep 0.01
 
 # Save in memory the previous command to be able to use it in print_prompt_new_line
 trap 'PREVIOUS_COMMAND=$BASH_COMMAND;' DEBUG
+
+# ZVM
+export ZVM_INSTALL="$HOME/.zvm/self"
+export PATH="$PATH:$HOME/.zvm/bin"
+export PATH="$PATH:$ZVM_INSTALL/"
