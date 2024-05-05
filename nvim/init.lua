@@ -20,6 +20,9 @@ vim.keymap.set("n", "<Right>", "<nop>")
 vim.keymap.set("n", "<Up>", "<nop>")
 vim.keymap.set("n", "<Down>", "<nop>")
 
+vim.opt.hlsearch = true
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
 -- Setup plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -111,9 +114,12 @@ require("lspconfig").lua_ls.setup({
 					"vim",
 				},
 			},
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
+			-- This makes the Lua LSP aware of the nvim runtime but it also slows
+			-- down the LSP loading and spike the CPU. For now I'll deactivate it
+			-- but let's keep this in mind if I ever develop a nvim plugin.
+			-- workspace = {
+			-- 	library = vim.api.nvim_get_runtime_file("", true),
+			-- },
 			telemetry = {
 				enable = false,
 			},
